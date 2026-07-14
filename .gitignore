@@ -11,7 +11,9 @@ dist/
 .env
 
 # Warehouse + dbt build artifacts
-data/
+# NB: root-anchored so it does NOT match census_trade/data/ (the committed
+# offline sample lives there).
+/data/
 census_dbt/target/
 census_dbt/dbt_packages/
 census_dbt/logs/
