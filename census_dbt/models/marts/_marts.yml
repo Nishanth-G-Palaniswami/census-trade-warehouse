@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: mart_top_partners
+    description: "Total import value per (period, country), ranked."
+    columns:
+      - name: country_code
+        tests: [not_null]
+      - name: total_import_value_usd
+        tests: [not_null]
+      - name: partner_rank
+        tests: [not_null]
+
+  - name: mart_imports_by_hs2
+    description: "Import value per (period, HS2 chapter) with share of period total."
+    columns:
+      - name: hs2_code
+        tests: [not_null]
+      - name: import_value_usd
+        tests: [not_null]
+      - name: pct_of_period
+        tests: [not_null]

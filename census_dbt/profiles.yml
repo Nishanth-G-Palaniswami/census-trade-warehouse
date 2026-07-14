@@ -1,0 +1,10 @@
+# DuckDB profile. CENSUS_DUCKDB is set to an absolute path by importing the
+# census_trade package (config.py); for a standalone `dbt build` from the repo
+# root, export it first:  export CENSUS_DUCKDB="$PWD/data/warehouse.duckdb"
+census_trade:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('CENSUS_DUCKDB', 'data/warehouse.duckdb') }}"
+      threads: 4

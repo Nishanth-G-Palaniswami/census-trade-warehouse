@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: census_raw
+    schema: raw
+    description: "Raw U.S. Census imports landed by the Dagster ingestion asset."
+    tables:
+      - name: imports
+        description: "One row per (period, country, HS2 chapter)."
+        # Map this dbt source to the Dagster asset produced by `raw_imports`
+        # so dbt models run downstream of ingestion.
+        meta:
+          dagster:
+            asset_key: ["raw", "imports"]
+        columns:
+          - name: gen_val_mo
+            description: "General customs import value (USD) for the period."
+          - name: cty_code
+            description: "Census country code."
+          - name: hs2
+            description: "2-digit Harmonized System chapter."

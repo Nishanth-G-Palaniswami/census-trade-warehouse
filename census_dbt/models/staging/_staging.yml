@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: stg_imports
+    description: "Typed, filtered import rows — one per (period, country, HS2)."
+    columns:
+      - name: period
+        tests: [not_null]
+      - name: country_code
+        tests: [not_null]
+      - name: hs2_code
+        tests: [not_null]
+      - name: import_value_usd
+        tests: [not_null]

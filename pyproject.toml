@@ -1,0 +1,34 @@
+[project]
+name = "census-trade-warehouse"
+version = "1.0.0"
+description = "Orchestrated ELT: U.S. Census import data -> DuckDB warehouse via Dagster + dbt."
+requires-python = ">=3.10"
+dependencies = [
+    "dagster>=1.7",
+    "dagster-dbt>=0.23",
+    "dbt-duckdb>=1.8",
+    "duckdb>=0.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "dagster-webserver>=1.7",
+    "pytest>=8.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["census_trade"]
+
+[tool.setuptools.package-data]
+census_trade = ["data/*.csv"]
+
+[tool.dagster]
+module_name = "census_trade"
+code_location_name = "census_trade"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,21 @@
+name: "census_trade"
+version: "1.0.0"
+config-version: 2
+
+profile: "census_trade"
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  census_trade:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

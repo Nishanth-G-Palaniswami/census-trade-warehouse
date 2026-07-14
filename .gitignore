@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+
+# Secrets
+.env
+
+# Warehouse + dbt build artifacts
+data/
+census_dbt/target/
+census_dbt/dbt_packages/
+census_dbt/logs/
+census_dbt/.user.yml
+logs/
+
+# Dagster local run storage
+tmp*/
+.dagster/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

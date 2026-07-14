@@ -1,0 +1,38 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Absolute path so the ingestion step and dbt land in the same file.
+      CENSUS_DUCKDB: ${{ github.workspace }}/data/warehouse.duckdb
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Unit tests (Census API client)
+        run: pytest -q
+
+      - name: Ingest (offline sample — no CENSUS_API_KEY in CI)
+        run: python -m census_trade.ingest --period 2023-12
+
+      - name: Build + test the warehouse (dbt)
+        working-directory: census_dbt
+        run: |
+          dbt build --profiles-dir .
+
+      - name: Validate Dagster definitions
+        run: dagster definitions validate
