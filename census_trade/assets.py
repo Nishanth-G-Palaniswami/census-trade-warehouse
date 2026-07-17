@@ -7,7 +7,7 @@ NOTE: no `from __future__ import annotations` here — Dagster inspects the real
 `context`/resource annotations at runtime, and PEP 563 stringized hints break
 that validation."""
 
-from dagster import AssetExecutionContext, MaterializeResult, MetadataValue, asset
+from dagster import AssetExecutionContext, Config, MaterializeResult, MetadataValue, asset
 from dagster_dbt import DbtCliResource, dbt_assets
 
 from . import ingest
@@ -17,11 +17,19 @@ from .project import dbt_project
 RAW_ASSET_KEY = [RAW_SCHEMA, RAW_TABLE]  # ["raw", "imports"]
 
 
+class IngestConfig(Config):
+    """Which reporting month to land. Manual runs default to a fixed,
+    always-available month (reproducible); the monthly schedule overrides this
+    with the latest published period computed from the tick date."""
+
+    period: str = DEFAULT_PERIOD
+
+
 @asset(key=RAW_ASSET_KEY, compute_kind="python", group_name="ingestion")
-def raw_imports(context: AssetExecutionContext) -> MaterializeResult:
+def raw_imports(context: AssetExecutionContext, config: IngestConfig) -> MaterializeResult:
     """Pull one month of U.S. imports (live Census API if CENSUS_API_KEY is set,
     otherwise the bundled offline sample) and land it into raw.imports."""
-    result = ingest.run(DEFAULT_PERIOD)
+    result = ingest.run(config.period)
     context.log.info(
         f"Landed {result['rows']} rows for {result['period']} "
         f"from {result['source']}."

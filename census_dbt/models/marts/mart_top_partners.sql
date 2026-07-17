@@ -1,5 +1,6 @@
--- Total U.S. import value by trading partner per period, ranked. This is the
--- "top 20 partners" view the app-layer would read.
+-- Total U.S. import value by trading partner per period, with a rank per
+-- period. Every partner is kept; consumers filter on partner_rank (e.g.
+-- partner_rank <= 20 for a "top 20" view).
 with imports as (
     select * from {{ ref('stg_imports') }}
 )
